@@ -1,0 +1,222 @@
+[
+    {
+        "id": "87ffda68aee91435",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "90c815de97c1316f",
+        "type": "websocket-client",
+        "path": "ws://192.168.0.64/ws/mesh",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "36b8a4cdf7d7347c",
+        "type": "sqlitedb",
+        "db": "mesh_display.db",
+        "mode": "RWC"
+    },
+    {
+        "id": "1a9961747dfc821e",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": 1,
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "7639dcb505777e6b",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "767ccc3765a6b593",
+        "type": "ui-page",
+        "name": "Page 1",
+        "ui": "1a9961747dfc821e",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "7639dcb505777e6b",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": 0,
+                "cols": 3
+            },
+            {
+                "name": "Tablet",
+                "px": 576,
+                "cols": 6
+            },
+            {
+                "name": "Small Desktop",
+                "px": 768,
+                "cols": 9
+            },
+            {
+                "name": "Desktop",
+                "px": 1024,
+                "cols": 12
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "535b1bb626f0ec74",
+        "type": "ui-group",
+        "name": "Group 1",
+        "page": "767ccc3765a6b593",
+        "width": 6,
+        "height": 1,
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false,
+        "groupType": "default"
+    },
+    {
+        "id": "f2b0b1ce453b7fe2",
+        "type": "websocket in",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "server": "",
+        "client": "90c815de97c1316f",
+        "x": 430,
+        "y": 260,
+        "wires": [
+            [
+                "c53080cd628c62e0"
+            ]
+        ]
+    },
+    {
+        "id": "c53080cd628c62e0",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "688765e8458b497a",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "fixed",
+        "sql": "",
+        "name": "dispaly",
+        "x": 620,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "097ff6c176d2e694",
+        "type": "ui-chart",
+        "z": "87ffda68aee91435",
+        "group": "535b1bb626f0ec74",
+        "name": "",
+        "label": "chart",
+        "order": 1,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": null,
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095FF",
+            "#FF0000",
+            "#FF7F0E",
+            "#2CA02C",
+            "#A347E1",
+            "#D62728",
+            "#FF9896",
+            "#9467BD",
+            "#C5B0D5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 570,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    }
+]
