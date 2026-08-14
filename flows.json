@@ -8,19 +8,9 @@
         "env": []
     },
     {
-        "id": "90c815de97c1316f",
-        "type": "websocket-client",
-        "path": "ws://192.168.0.64/ws/mesh",
-        "tls": "",
-        "wholemsg": "false",
-        "hb": "0",
-        "subprotocol": "",
-        "headers": []
-    },
-    {
         "id": "36b8a4cdf7d7347c",
         "type": "sqlitedb",
-        "db": "mesh_display.db",
+        "db": "mesh.db",
         "mode": "RWC"
     },
     {
@@ -65,32 +55,32 @@
     {
         "id": "767ccc3765a6b593",
         "type": "ui-page",
-        "name": "Page 1",
+        "name": "Setup",
         "ui": "1a9961747dfc821e",
-        "path": "/page1",
+        "path": "/setup",
         "icon": "home",
         "layout": "grid",
         "theme": "7639dcb505777e6b",
         "breakpoints": [
             {
                 "name": "Default",
-                "px": 0,
-                "cols": 3
+                "px": "0",
+                "cols": "3"
             },
             {
                 "name": "Tablet",
-                "px": 576,
-                "cols": 6
+                "px": "576",
+                "cols": "6"
             },
             {
                 "name": "Small Desktop",
-                "px": 768,
-                "cols": 9
+                "px": "768",
+                "cols": "9"
             },
             {
                 "name": "Desktop",
-                "px": 1024,
-                "cols": 12
+                "px": "1024",
+                "cols": "12"
             }
         ],
         "order": 1,
@@ -101,31 +91,39 @@
     {
         "id": "535b1bb626f0ec74",
         "type": "ui-group",
-        "name": "Group 1",
+        "name": "IP",
         "page": "767ccc3765a6b593",
         "width": 6,
         "height": 1,
         "order": 1,
         "showTitle": true,
         "className": "",
-        "visible": true,
-        "disabled": false,
+        "visible": "true",
+        "disabled": "false",
         "groupType": "default"
     },
     {
-        "id": "f2b0b1ce453b7fe2",
-        "type": "websocket in",
-        "z": "87ffda68aee91435",
-        "name": "",
-        "server": "",
-        "client": "90c815de97c1316f",
-        "x": 430,
-        "y": 260,
-        "wires": [
-            [
-                "c53080cd628c62e0"
-            ]
-        ]
+        "id": "03b51479971f979c",
+        "type": "bacnet client",
+        "name": "node-red",
+        "interface": "0.0.0.0",
+        "port": 47808,
+        "broadcastAddress": "192.168.0.255",
+        "apduTimeout": 6000
+    },
+    {
+        "id": "77d6bff0feccaad0",
+        "type": "ui-group",
+        "name": "Group 2",
+        "page": "767ccc3765a6b593",
+        "width": 6,
+        "height": 1,
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": true,
+        "disabled": false,
+        "groupType": "default"
     },
     {
         "id": "c53080cd628c62e0",
@@ -136,11 +134,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
         "x": 800,
-        "y": 260,
+        "y": 220,
         "wires": []
     },
     {
@@ -148,11 +147,11 @@
         "type": "sqlite",
         "z": "87ffda68aee91435",
         "mydb": "36b8a4cdf7d7347c",
-        "sqlquery": "fixed",
+        "sqlquery": "msg.topic",
         "sql": "",
-        "name": "dispaly",
-        "x": 620,
-        "y": 400,
+        "name": "mesh_db",
+        "x": 1160,
+        "y": 160,
         "wires": [
             []
         ]
@@ -161,7 +160,7 @@
         "id": "097ff6c176d2e694",
         "type": "ui-chart",
         "z": "87ffda68aee91435",
-        "group": "535b1bb626f0ec74",
+        "group": "77d6bff0feccaad0",
         "name": "",
         "label": "chart",
         "order": 1,
@@ -213,10 +212,414 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 570,
-        "y": 520,
+        "x": 870,
+        "y": 380,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "36cb113f245dcdf9",
+        "type": "discover device",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "client": "03b51479971f979c",
+        "network": 65535,
+        "lowLimit": 0,
+        "highLimit": 4194304,
+        "whoIsTimeout": "1000",
+        "x": 320,
+        "y": 460,
+        "wires": [
+            [
+                "d187cd70728ea1e6"
+            ]
+        ]
+    },
+    {
+        "id": "efaaeaf9d70ff3ec",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4ed10c031cd7689c",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 460,
+        "wires": [
+            [
+                "36cb113f245dcdf9"
+            ]
+        ]
+    },
+    {
+        "id": "d187cd70728ea1e6",
+        "type": "split",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 510,
+        "y": 460,
+        "wires": [
+            [
+                "bc106de72f32c171",
+                "efaaeaf9d70ff3ec"
+            ]
+        ]
+    },
+    {
+        "id": "bc106de72f32c171",
+        "type": "switch",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "property": "payload.deviceName",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "MLM Mesh Gateway",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 650,
+        "y": 480,
+        "wires": [
+            [
+                "cdb862564fbfa0d3"
+            ]
+        ]
+    },
+    {
+        "id": "23514f5b7d48565e",
+        "type": "ui-button",
+        "z": "87ffda68aee91435",
+        "group": "535b1bb626f0ec74",
+        "name": "",
+        "label": "Detect",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "emulateClick": true,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "iconPosition": "left",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 110,
+        "y": 580,
+        "wires": [
+            [
+                "36cb113f245dcdf9",
+                "53b2d87b71f8a62a"
+            ]
+        ]
+    },
+    {
+        "id": "53b2d87b71f8a62a",
+        "type": "ui-text",
+        "z": "87ffda68aee91435",
+        "group": "535b1bb626f0ec74",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "IP",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "payload",
+        "valueType": "msg",
+        "x": 970,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "cdb862564fbfa0d3",
+        "type": "change",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "'ws://' & payload.ipAddress & '/ws/mesh'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.ipAddress",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 780,
+        "y": 540,
+        "wires": [
+            [
+                "53b2d87b71f8a62a",
+                "ba9e12c15fe6a6d3"
+            ]
+        ]
+    },
+    {
+        "id": "ba9e12c15fe6a6d3",
+        "type": "dynamic-websocket",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "url": "",
+        "allowSelfSigned": false,
+        "autoReconnect": true,
+        "reconnectAttempts": 0,
+        "reconnectInterval": 5000,
+        "useExponentialBackoff": false,
+        "authType": "none",
+        "username": "",
+        "password": "",
+        "token": "",
+        "tokenLocation": "header",
+        "tokenKey": "Authorization",
+        "headers": "",
+        "transformMessages": false,
+        "messageFormat": "json",
+        "binarySupport": false,
+        "validateMessages": false,
+        "messageTemplate": "",
+        "x": 440,
+        "y": 260,
+        "wires": [
+            [
+                "c53080cd628c62e0",
+                "aeb0722397d6b4ae"
+            ],
+            [
+                "68acf644d341a107",
+                "c30600479d78044f"
+            ],
+            [
+                "736a86a5a4958fd2",
+                "c30600479d78044f"
+            ]
+        ]
+    },
+    {
+        "id": "c30600479d78044f",
+        "type": "ui-text",
+        "z": "87ffda68aee91435",
+        "group": "535b1bb626f0ec74",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Connection",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "wrapText": false,
+        "className": "",
+        "value": "state",
+        "valueType": "msg",
+        "x": 810,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "68acf644d341a107",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "736a86a5a4958fd2",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "aeb0722397d6b4ae",
+        "type": "switch",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "property": "payload.t",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "master",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "slave",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "dispaly",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 810,
+        "y": 160,
+        "wires": [
+            [
+                "ea1ecc99827ab8ca"
+            ],
+            [
+                "0133c396b4bd04f9"
+            ],
+            [
+                "d36a9cd3645fc670"
+            ]
+        ]
+    },
+    {
+        "id": "ea1ecc99827ab8ca",
+        "type": "template",
+        "z": "87ffda68aee91435",
+        "name": "master",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 970,
+        "y": 120,
+        "wires": [
+            [
+                "688765e8458b497a"
+            ]
+        ]
+    },
+    {
+        "id": "0133c396b4bd04f9",
+        "type": "template",
+        "z": "87ffda68aee91435",
+        "name": "slave",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 970,
+        "y": 160,
+        "wires": [
+            [
+                "688765e8458b497a"
+            ]
+        ]
+    },
+    {
+        "id": "d36a9cd3645fc670",
+        "type": "template",
+        "z": "87ffda68aee91435",
+        "name": "display",
+        "field": "topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 980,
+        "y": 200,
+        "wires": [
+            [
+                "688765e8458b497a"
+            ]
         ]
     }
 ]
