@@ -263,22 +263,22 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "Zone",
-        "order": 1,
+        "label": "Zone - Setpoint/Room °C (last 30 min)",
+        "order": 2,
         "chartType": "line",
         "category": "topic",
         "categoryType": "msg",
         "xAxisLabel": "",
-        "xAxisProperty": "",
-        "xAxisPropertyType": "timestamp",
+        "xAxisProperty": "x",
+        "xAxisPropertyType": "property",
         "xAxisType": "time",
         "xAxisFormat": "",
         "xAxisFormatType": "auto",
         "xmin": "",
         "xmax": "",
         "yAxisLabel": "",
-        "yAxisProperty": "payload",
-        "yAxisPropertyType": "msg",
+        "yAxisProperty": "y",
+        "yAxisPropertyType": "property",
         "ymin": "",
         "ymax": "",
         "bins": 10,
@@ -287,8 +287,8 @@
         "pointShape": "circle",
         "pointRadius": 4,
         "showLegend": true,
-        "removeOlder": 1,
-        "removeOlderUnit": "3600",
+        "removeOlder": 30,
+        "removeOlderUnit": "60",
         "removeOlderPoints": "",
         "colors": [
             "#0095ff",
@@ -313,8 +313,8 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 1470,
-        "y": 260,
+        "x": 1360,
+        "y": 860,
         "wires": [
             []
         ]
@@ -818,7 +818,6 @@
         "y": 260,
         "wires": [
             [
-                "097ff6c176d2e694",
                 "9f39a967d01d2d37"
             ]
         ]
@@ -830,7 +829,7 @@
         "group": "77d6bff0feccaad0",
         "name": "",
         "label": "selectedGidx",
-        "order": 0,
+        "order": 1,
         "width": 0,
         "height": 0,
         "topic": "topic",
@@ -934,5 +933,151 @@
         "x": 1060,
         "y": 300,
         "wires": []
+    },
+    {
+        "id": "inj0002chartrefresh",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "chart refresh (every 5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 370,
+        "y": 860,
+        "wires": [
+            [
+                "fn0002historyparams"
+            ]
+        ]
+    },
+    {
+        "id": "fn0002historyparams",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "build history query params",
+        "func": "var gidx = global.get('selectedGidx');\nif (gidx === undefined || gidx === null) { gidx = 0; }\n\nmsg.params = {\n    \"$gidx\": gidx,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 860,
+        "wires": [
+            [
+                "sq0004queryhistory"
+            ]
+        ]
+    },
+    {
+        "id": "sq0004queryhistory",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "SELECT ts, setpoint, room, motor, heater FROM display WHERE gidx = $gidx AND ts >= $since ORDER BY ts ASC",
+        "name": "query display history",
+        "x": 900,
+        "y": 860,
+        "wires": [
+            [
+                "fn0003rowstoseries"
+            ]
+        ]
+    },
+    {
+        "id": "fn0003rowstoseries",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "rows -> chart series",
+        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nvar temps = [\n    { topic: 'setpoint', payload: series('setpoint'), action: 'replace' },\n    { topic: 'room', payload: series('room') }\n];\nvar pct = [\n    { topic: 'motor', payload: series('motor'), action: 'replace' },\n    { topic: 'heater', payload: series('heater') }\n];\n\nreturn [temps, pct];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1110,
+        "y": 860,
+        "wires": [
+            [
+                "097ff6c176d2e694"
+            ],
+            [
+                "cht0002motorheater"
+            ]
+        ]
+    },
+    {
+        "id": "cht0002motorheater",
+        "type": "ui-chart",
+        "z": "87ffda68aee91435",
+        "group": "77d6bff0feccaad0",
+        "name": "",
+        "label": "Zone - Motor/Heater % (last 30 min)",
+        "order": 3,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "x",
+        "xAxisPropertyType": "property",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "y",
+        "yAxisPropertyType": "property",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 30,
+        "removeOlderUnit": "60",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 1360,
+        "y": 920,
+        "wires": [
+            []
+        ]
     }
 ]
