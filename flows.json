@@ -130,7 +130,7 @@
         "type": "debug",
         "z": "87ffda68aee91435",
         "name": "debug 1",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -147,13 +147,114 @@
         "type": "sqlite",
         "z": "87ffda68aee91435",
         "mydb": "36b8a4cdf7d7347c",
-        "sqlquery": "msg.topic",
+        "sqlquery": "batch",
         "sql": "",
-        "name": "mesh_db",
-        "x": 1160,
-        "y": 160,
+        "name": "create tables",
+        "x": 900,
+        "y": 620,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "inj0001createtabls",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "create tables (on deploy)",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.3,
+        "topic": "CREATE TABLE IF NOT EXISTS master (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, node INTEGER, zone INTEGER, gidx INTEGER, room REAL, room_src INTEGER, room_active INTEGER, supply REAL, supply_src INTEGER, supply_active INTEGER, override REAL, override_pri INTEGER, override_active INTEGER, setpoint REAL, setpoint_pri INTEGER, setpoint_active INTEGER, aux REAL, aux_active INTEGER, identify INTEGER, changeover INTEGER, ctrl_state INTEGER); CREATE INDEX IF NOT EXISTS idx_master_node_zone_ts ON master(node, zone, ts); CREATE TABLE IF NOT EXISTS slave (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, node INTEGER, zone INTEGER, gidx INTEGER, ctrl_state INTEGER, motor1_state INTEGER, motor2_state INTEGER, heater_out REAL, identify INTEGER, motor1_pos REAL, motor2_pos REAL, changeover INTEGER, flow_state INTEGER, pressure REAL, flow_rate REAL); CREATE INDEX IF NOT EXISTS idx_slave_node_zone_ts ON slave(node, zone, ts); CREATE TABLE IF NOT EXISTS display (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, node INTEGER, zone INTEGER, gidx INTEGER, room REAL, room_src INTEGER, supply REAL, supply_src INTEGER, setpoint REAL, setpoint_pri INTEGER, override_pri INTEGER, override REAL, ctrl_state INTEGER, heater REAL, motor REAL, supply_voltage_fault INTEGER, changeover INTEGER); CREATE INDEX IF NOT EXISTS idx_display_node_zone_ts ON display(node, zone, ts);",
+        "payload": "",
+        "payloadType": "date",
+        "x": 640,
+        "y": 620,
+        "wires": [
+            [
+                "688765e8458b497a"
+            ]
+        ]
+    },
+    {
+        "id": "ts0001setmsgts0",
+        "type": "change",
+        "z": "87ffda68aee91435",
+        "name": "set ts",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ts",
+                "pt": "msg",
+                "to": "$millis()",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 200,
+        "wires": [
+            [
+                "aeb0722397d6b4ae"
+            ]
+        ]
+    },
+    {
+        "id": "sq0001insertmaster",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "INSERT INTO master (ts,node,zone,gidx,room,room_src,room_active,supply,supply_src,supply_active,override,override_pri,override_active,setpoint,setpoint_pri,setpoint_active,aux,aux_active,identify,changeover,ctrl_state) VALUES ($ts,$node,$zone,$gidx,$room,$room_src,$room_active,$supply,$supply_src,$supply_active,$override,$override_pri,$override_active,$setpoint,$setpoint_pri,$setpoint_active,$aux,$aux_active,$identify,$changeover,$ctrl_state)",
+        "name": "insert master",
+        "x": 1180,
+        "y": 120,
+        "wires": [
+            [
+                "e62c288a612ef63e"
+            ]
+        ]
+    },
+    {
+        "id": "sq0002insertslave",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "INSERT INTO slave (ts,node,zone,gidx,ctrl_state,motor1_state,motor2_state,heater_out,identify,motor1_pos,motor2_pos,changeover,flow_state,pressure,flow_rate) VALUES ($ts,$node,$zone,$gidx,$ctrl_state,$motor1_state,$motor2_state,$heater_out,$identify,$motor1_pos,$motor2_pos,$changeover,$flow_state,$pressure,$flow_rate)",
+        "name": "insert slave",
+        "x": 1180,
+        "y": 160,
+        "wires": [
+            [
+                "e62c288a612ef63e"
+            ]
+        ]
+    },
+    {
+        "id": "sq0003insertdisplay",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "INSERT INTO display (ts,node,zone,gidx,room,room_src,supply,supply_src,setpoint,setpoint_pri,override_pri,override,ctrl_state,heater,motor,supply_voltage_fault,changeover) VALUES ($ts,$node,$zone,$gidx,$room,$room_src,$supply,$supply_src,$setpoint,$setpoint_pri,$override_pri,$override,$ctrl_state,$heater,$motor,$supply_voltage_fault,$changeover)",
+        "name": "insert display",
+        "x": 1180,
+        "y": 200,
+        "wires": [
+            [
+                "e62c288a612ef63e"
+            ]
         ]
     },
     {
@@ -162,13 +263,13 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "chart",
+        "label": "Zone",
         "order": 1,
         "chartType": "line",
         "category": "topic",
         "categoryType": "msg",
         "xAxisLabel": "",
-        "xAxisProperty": null,
+        "xAxisProperty": "",
         "xAxisPropertyType": "timestamp",
         "xAxisType": "time",
         "xAxisFormat": "",
@@ -190,15 +291,15 @@
         "removeOlderUnit": "3600",
         "removeOlderPoints": "",
         "colors": [
-            "#0095FF",
-            "#FF0000",
-            "#FF7F0E",
-            "#2CA02C",
-            "#A347E1",
-            "#D62728",
-            "#FF9896",
-            "#9467BD",
-            "#C5B0D5"
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
         ],
         "textColor": [
             "#666666"
@@ -212,8 +313,8 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 870,
-        "y": 380,
+        "x": 1470,
+        "y": 260,
         "wires": [
             []
         ]
@@ -454,7 +555,7 @@
         "wires": [
             [
                 "c53080cd628c62e0",
-                "aeb0722397d6b4ae"
+                "ts0001setmsgts0"
             ],
             [
                 "68acf644d341a107",
@@ -544,7 +645,7 @@
             },
             {
                 "t": "eq",
-                "v": "dispaly",
+                "v": "display",
                 "vt": "str"
             }
         ],
@@ -570,17 +671,17 @@
         "type": "template",
         "z": "87ffda68aee91435",
         "name": "master",
-        "field": "topic",
+        "field": "params",
         "fieldType": "msg",
-        "format": "handlebars",
+        "format": "json",
         "syntax": "mustache",
-        "template": "This is the payload: {{payload}} !",
-        "output": "str",
+        "template": "{\n  \"$ts\": {{ts}},\n  \"$node\": {{payload.node}},\n  \"$zone\": {{payload.zone}},\n  \"$gidx\": {{payload.gidx}},\n  \"$room\": {{payload.room}},\n  \"$room_src\": {{payload.room_src}},\n  \"$room_active\": {{payload.room_active}},\n  \"$supply\": {{payload.supply}},\n  \"$supply_src\": {{payload.supply_src}},\n  \"$supply_active\": {{payload.supply_active}},\n  \"$override\": {{payload.override}},\n  \"$override_pri\": {{payload.override_pri}},\n  \"$override_active\": {{payload.override_active}},\n  \"$setpoint\": {{payload.setpoint}},\n  \"$setpoint_pri\": {{payload.setpoint_pri}},\n  \"$setpoint_active\": {{payload.setpoint_active}},\n  \"$aux\": {{payload.aux}},\n  \"$aux_active\": {{payload.aux_active}},\n  \"$identify\": {{payload.identify}},\n  \"$changeover\": {{payload.changeover}},\n  \"$ctrl_state\": {{payload.ctrl_state}}\n}",
+        "output": "json",
         "x": 970,
         "y": 120,
         "wires": [
             [
-                "688765e8458b497a"
+                "sq0001insertmaster"
             ]
         ]
     },
@@ -589,17 +690,17 @@
         "type": "template",
         "z": "87ffda68aee91435",
         "name": "slave",
-        "field": "topic",
+        "field": "params",
         "fieldType": "msg",
-        "format": "handlebars",
+        "format": "json",
         "syntax": "mustache",
-        "template": "This is the payload: {{payload}} !",
-        "output": "str",
+        "template": "{\n  \"$ts\": {{ts}},\n  \"$node\": {{payload.node}},\n  \"$zone\": {{payload.zone}},\n  \"$gidx\": {{payload.gidx}},\n  \"$ctrl_state\": {{payload.ctrl_state}},\n  \"$motor1_state\": {{payload.motor1_state}},\n  \"$motor2_state\": {{payload.motor2_state}},\n  \"$heater_out\": {{payload.heater_out}},\n  \"$identify\": {{payload.identify}},\n  \"$motor1_pos\": {{payload.motor1_pos}},\n  \"$motor2_pos\": {{payload.motor2_pos}},\n  \"$changeover\": {{payload.changeover}},\n  \"$flow_state\": {{payload.flow_state}},\n  \"$pressure\": {{payload.pressure}},\n  \"$flow_rate\": {{payload.flow_rate}}\n}",
+        "output": "json",
         "x": 970,
         "y": 160,
         "wires": [
             [
-                "688765e8458b497a"
+                "sq0002insertslave"
             ]
         ]
     },
@@ -608,18 +709,230 @@
         "type": "template",
         "z": "87ffda68aee91435",
         "name": "display",
-        "field": "topic",
+        "field": "params",
         "fieldType": "msg",
-        "format": "handlebars",
+        "format": "json",
         "syntax": "mustache",
-        "template": "This is the payload: {{payload}} !",
-        "output": "str",
+        "template": "{\n  \"$ts\": {{ts}},\n  \"$node\": {{payload.node}},\n  \"$zone\": {{payload.zone}},\n  \"$gidx\": {{payload.gidx}},\n  \"$room\": {{payload.room}},\n  \"$room_src\": {{payload.room_src}},\n  \"$supply\": {{payload.supply}},\n  \"$supply_src\": {{payload.supply_src}},\n  \"$setpoint\": {{payload.setpoint}},\n  \"$setpoint_pri\": {{payload.setpoint_pri}},\n  \"$override_pri\": {{payload.override_pri}},\n  \"$override\": {{payload.override}},\n  \"$ctrl_state\": {{payload.ctrl_state}},\n  \"$heater\": {{payload.heater}},\n  \"$motor\": {{payload.motor}},\n  \"$supply_voltage_fault\": {{payload.supply_voltage_fault}},\n  \"$changeover\": {{payload.changeover}}\n}",
+        "output": "json",
         "x": 980,
         "y": 200,
         "wires": [
             [
-                "688765e8458b497a"
+                "sq0003insertdisplay",
+                "fn0001displaychart",
+                "cab60a29ff9f0bae"
             ]
         ]
+    },
+    {
+        "id": "e62c288a612ef63e",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1360,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "400cc3376c36b15e",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "fixed",
+        "sql": "select * from 'display'\n",
+        "name": "",
+        "x": 1420,
+        "y": 380,
+        "wires": [
+            [
+                "0afc48b03590e6b7"
+            ]
+        ]
+    },
+    {
+        "id": "0afc48b03590e6b7",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1620,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "ba1821c8f1836ab3",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1220,
+        "y": 360,
+        "wires": [
+            [
+                "400cc3376c36b15e"
+            ]
+        ]
+    },
+    {
+        "id": "fn0001displaychart",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "display -> chart (gidx filter)",
+        "func": "var selected = 1//flow.get('selectedGidx');\n//node.status(selected)\n//if (selected === undefined || selected === null) { selected = 1; }\nif (msg.payload.gidx !== selected) { return null; }\n\nvar out = [\n    { topic: 'setpoint', payload: msg.payload.setpoint },\n    { topic: 'room', payload: msg.payload.room },\n    { topic: 'motor', payload: msg.payload.motor },\n    { topic: 'heater', payload: msg.payload.heater }\n];\nreturn [out];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1240,
+        "y": 260,
+        "wires": [
+            [
+                "097ff6c176d2e694",
+                "9f39a967d01d2d37"
+            ]
+        ]
+    },
+    {
+        "id": "7de690a7482d5e80",
+        "type": "ui-number-input",
+        "z": "87ffda68aee91435",
+        "group": "77d6bff0feccaad0",
+        "name": "",
+        "label": "selectedGidx",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "topic": "topic",
+        "topicType": "msg",
+        "min": "1",
+        "max": "3",
+        "step": 1,
+        "tooltip": "",
+        "delay": 300,
+        "passthru": true,
+        "sendOnDelay": false,
+        "sendOnBlur": true,
+        "sendOnEnter": true,
+        "className": "",
+        "clearable": false,
+        "icon": "",
+        "iconPosition": "left",
+        "iconInnerPosition": "inside",
+        "spinner": "default",
+        "x": 1510,
+        "y": 320,
+        "wires": [
+            [
+                "efaf318c7699aeb2"
+            ]
+        ]
+    },
+    {
+        "id": "948f3996a467c1b0",
+        "type": "change",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "selectedGidx",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1890,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "efaf318c7699aeb2",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "function 1",
+        "func": "msg.payload = msg.payload - 1\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1680,
+        "y": 320,
+        "wires": [
+            [
+                "948f3996a467c1b0"
+            ]
+        ]
+    },
+    {
+        "id": "9f39a967d01d2d37",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1560,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "cab60a29ff9f0bae",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 300,
+        "wires": []
     }
 ]
