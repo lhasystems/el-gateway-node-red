@@ -166,7 +166,7 @@
         "type": "debug",
         "z": "87ffda68aee91435",
         "name": "debug 1",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -349,8 +349,8 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 1390,
-        "y": 840,
+        "x": 1210,
+        "y": 800,
         "wires": [
             []
         ]
@@ -910,8 +910,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 370,
-        "y": 860,
+        "x": 190,
+        "y": 820,
         "wires": [
             [
                 "fn0002historyparams"
@@ -930,8 +930,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 640,
-        "y": 860,
+        "x": 460,
+        "y": 820,
         "wires": [
             [
                 "sq0004queryhistory"
@@ -946,8 +946,8 @@
         "sqlquery": "prepared",
         "sql": "SELECT ts, setpoint, room, motor, heater FROM display WHERE gidx = $gidx AND ts >= $since ORDER BY ts ASC",
         "name": "query display history",
-        "x": 900,
-        "y": 860,
+        "x": 720,
+        "y": 820,
         "wires": [
             [
                 "fn0003rowstoseries"
@@ -966,8 +966,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1110,
-        "y": 860,
+        "x": 930,
+        "y": 820,
         "wires": [
             [
                 "097ff6c176d2e694"
@@ -1033,332 +1033,10 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 1380,
-        "y": 880,
+        "x": 1200,
+        "y": 840,
         "wires": [
             []
-        ]
-    },
-    {
-        "id": "dd0001type",
-        "type": "ui-dropdown",
-        "z": "87ffda68aee91435",
-        "group": "77d6bff0feccaad0",
-        "name": "",
-        "label": "Type",
-        "tooltip": "",
-        "order": 5,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "multiple": false,
-        "chips": false,
-        "clearable": false,
-        "options": [
-            {
-                "label": "Master",
-                "value": "master",
-                "type": "str"
-            },
-            {
-                "label": "Slave",
-                "value": "slave",
-                "type": "str"
-            }
-        ],
-        "payload": "",
-        "topic": "topic",
-        "topicType": "msg",
-        "className": "",
-        "typeIsComboBox": false,
-        "msgTrigger": "onChange",
-        "x": 1210,
-        "y": 1100,
-        "wires": [
-            [
-                "ch0003settype"
-            ]
-        ]
-    },
-    {
-        "id": "ch0003settype",
-        "type": "change",
-        "z": "87ffda68aee91435",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "selectedType",
-                "pt": "global",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1410,
-        "y": 1100,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "dd0002node",
-        "type": "ui-dropdown",
-        "z": "87ffda68aee91435",
-        "group": "77d6bff0feccaad0",
-        "name": "",
-        "label": "Master Node",
-        "tooltip": "",
-        "order": 6,
-        "width": 0,
-        "height": 0,
-        "passthru": false,
-        "multiple": false,
-        "chips": false,
-        "clearable": false,
-        "options": [
-            {
-                "label": "",
-                "value": "",
-                "type": "str"
-            }
-        ],
-        "payload": "",
-        "topic": "topic",
-        "topicType": "msg",
-        "className": "",
-        "typeIsComboBox": false,
-        "msgTrigger": "onChange",
-        "x": 1210,
-        "y": 960,
-        "wires": [
-            [
-                "ch0004setnode"
-            ]
-        ]
-    },
-    {
-        "id": "ch0004setnode",
-        "type": "change",
-        "z": "87ffda68aee91435",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "selectedNode",
-                "pt": "global",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1420,
-        "y": 960,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "inj0003nodeoptions",
-        "type": "inject",
-        "z": "87ffda68aee91435",
-        "name": "populate node dropdown (on deploy + 60s)",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "60",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 370,
-        "y": 960,
-        "wires": [
-            [
-                "sq0005distinctnodes"
-            ]
-        ]
-    },
-    {
-        "id": "sq0005distinctnodes",
-        "type": "sqlite",
-        "z": "87ffda68aee91435",
-        "mydb": "36b8a4cdf7d7347c",
-        "sqlquery": "fixed",
-        "sql": "SELECT DISTINCT node FROM master ORDER BY node ASC",
-        "name": "query distinct nodes",
-        "x": 700,
-        "y": 960,
-        "wires": [
-            [
-                "fn0004nodeoptions",
-                "f2746ffa8e0f874c"
-            ]
-        ]
-    },
-    {
-        "id": "fn0004nodeoptions",
-        "type": "function",
-        "z": "87ffda68aee91435",
-        "name": "build node options",
-        "func": "var rows = msg.payload || [];\nmsg.options = rows.map(function (r) {\n    return { label: String(r.node), value: r.node, type: 'num' };\n});\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 970,
-        "y": 960,
-        "wires": [
-            [
-                "dd0002node"
-            ]
-        ]
-    },
-    {
-        "id": "inj0004msrefresh",
-        "type": "inject",
-        "z": "87ffda68aee91435",
-        "name": "chart refresh (master/slave, every 5s)",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "5",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1.5",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 350,
-        "y": 1020,
-        "wires": [
-            [
-                "fn0005msparams"
-            ]
-        ]
-    },
-    {
-        "id": "fn0005msparams",
-        "type": "function",
-        "z": "87ffda68aee91435",
-        "name": "build master/slave query params",
-        "func": "var type = global.get('selectedType');\nif (type !== 'master' && type !== 'slave') { type = 'master'; }\nvar node = global.get('selectedNode');\nif (node === undefined || node === null) { node = 4; }\n\nmsg.type = type;\nmsg.params = {\n    \"$node\": node,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 680,
-        "y": 1020,
-        "wires": [
-            [
-                "sw0002mstype"
-            ]
-        ]
-    },
-    {
-        "id": "sw0002mstype",
-        "type": "switch",
-        "z": "87ffda68aee91435",
-        "name": "",
-        "property": "type",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "master",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "slave",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 940,
-        "y": 1020,
-        "wires": [
-            [
-                "sq0006querymaster"
-            ],
-            [
-                "sq0007queryslave"
-            ]
-        ]
-    },
-    {
-        "id": "sq0006querymaster",
-        "type": "sqlite",
-        "z": "87ffda68aee91435",
-        "mydb": "36b8a4cdf7d7347c",
-        "sqlquery": "prepared",
-        "sql": "SELECT ts, setpoint AS sp, room AS temp, NULL AS motor, NULL AS heater FROM master WHERE node = $node AND ts >= $since ORDER BY ts ASC",
-        "name": "query master history",
-        "x": 1210,
-        "y": 1000,
-        "wires": [
-            [
-                "fn0006msrows"
-            ]
-        ]
-    },
-    {
-        "id": "sq0007queryslave",
-        "type": "sqlite",
-        "z": "87ffda68aee91435",
-        "mydb": "36b8a4cdf7d7347c",
-        "sqlquery": "prepared",
-        "sql": "SELECT ts, NULL AS sp, NULL AS temp, motor1_pos AS motor, heater_out AS heater FROM slave WHERE node = $node AND ts >= $since ORDER BY ts ASC",
-        "name": "query slave history",
-        "x": 1210,
-        "y": 1040,
-        "wires": [
-            [
-                "fn0006msrows"
-            ]
-        ]
-    },
-    {
-        "id": "fn0006msrows",
-        "type": "function",
-        "z": "87ffda68aee91435",
-        "name": "rows -> chart series (master/slave)",
-        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    }).filter(function (p) {\n        return p.y !== null && p.y !== undefined;\n    });\n}\n\nvar chartA = [\n    { topic: 'sp', payload: series('sp'), action: 'replace' },\n    { topic: 'temp', payload: series('temp') }\n];\nvar chartB = [\n    { topic: 'motor', payload: series('motor'), action: 'replace' },\n    { topic: 'heater', payload: series('heater') }\n];\n\nreturn [chartA, chartB];",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1480,
-        "y": 1020,
-        "wires": [
-            [
-                "cht0003msa"
-            ],
-            [
-                "cht0004msb"
-            ]
         ]
     },
     {
@@ -1367,7 +1045,7 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "Node - Setpoint/Temp °C (last 30 min)",
+        "label": "Master Node - Setpoint/Room °C (last 30 min)",
         "order": 8,
         "chartType": "line",
         "category": "topic",
@@ -1417,8 +1095,8 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 1810,
-        "y": 1000,
+        "x": 1480,
+        "y": 1040,
         "wires": [
             []
         ]
@@ -1429,7 +1107,7 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "Node - Motor/Heater % (last 30 min)",
+        "label": "Slave Node - Motor/Heater % (last 30 min)",
         "order": 9,
         "chartType": "line",
         "category": "topic",
@@ -1479,8 +1157,8 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 1810,
-        "y": 1040,
+        "x": 1450,
+        "y": 1100,
         "wires": [
             []
         ]
@@ -1502,7 +1180,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 370,
+        "x": 220,
         "y": 680,
         "wires": [
             [
@@ -1518,7 +1196,7 @@
         "sqlquery": "fixed",
         "sql": "SELECT DISTINCT gidx FROM display ORDER BY gidx ASC",
         "name": "query distinct gidx",
-        "x": 670,
+        "x": 520,
         "y": 680,
         "wires": [
             [
@@ -1538,7 +1216,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 940,
+        "x": 750,
         "y": 680,
         "wires": [
             [
@@ -1573,7 +1251,7 @@
         "className": "",
         "typeIsComboBox": false,
         "msgTrigger": "onChange",
-        "x": 1170,
+        "x": 930,
         "y": 680,
         "wires": [
             [
@@ -1600,29 +1278,14 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1390,
+        "x": 1130,
         "y": 680,
         "wires": [
             [
+                "fn0008gidxqueryparams",
                 "2ab157a4b312b62c"
             ]
         ]
-    },
-    {
-        "id": "f2746ffa8e0f874c",
-        "type": "debug",
-        "z": "87ffda68aee91435",
-        "name": "debug 9",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 920,
-        "y": 920,
-        "wires": []
     },
     {
         "id": "426d250c36290c32",
@@ -1652,8 +1315,8 @@
         "className": "",
         "typeIsComboBox": false,
         "msgTrigger": "onChange",
-        "x": 1210,
-        "y": 1180,
+        "x": 1190,
+        "y": 980,
         "wires": [
             [
                 "c9f4821ac1434969"
@@ -1679,8 +1342,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1420,
-        "y": 1180,
+        "x": 1410,
+        "y": 980,
         "wires": [
             []
         ]
@@ -1703,7 +1366,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 370,
-        "y": 1180,
+        "y": 960,
         "wires": [
             [
                 "6bcacdc2aecb7488"
@@ -1719,7 +1382,7 @@
         "sql": "SELECT DISTINCT node FROM slave ORDER BY node ASC",
         "name": "query distinct nodes",
         "x": 700,
-        "y": 1180,
+        "y": 960,
         "wires": [
             [
                 "2f61269e4a2fe164",
@@ -1739,8 +1402,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 970,
-        "y": 1180,
+        "x": 990,
+        "y": 980,
         "wires": [
             [
                 "426d250c36290c32"
@@ -1759,8 +1422,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 920,
-        "y": 1140,
+        "x": 960,
+        "y": 940,
         "wires": []
     },
     {
@@ -1815,8 +1478,8 @@
         "className": "",
         "value": "payload",
         "valueType": "msg",
-        "x": 2020,
-        "y": 800,
+        "x": 1880,
+        "y": 640,
         "wires": []
     },
     {
@@ -1827,8 +1490,8 @@
         "sqlquery": "msg.topic",
         "sql": "",
         "name": "query distinct gidx",
-        "x": 1790,
-        "y": 680,
+        "x": 1530,
+        "y": 640,
         "wires": [
             [
                 "6ec23f3fc72424af"
@@ -1848,8 +1511,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 2000,
-        "y": 640,
+        "x": 1880,
+        "y": 600,
         "wires": []
     },
     {
@@ -1863,8 +1526,8 @@
         "syntax": "mustache",
         "template": "SELECT DISTINCT node FROM slave WHERE gidx == {{global.selectedGidx}} ORDER BY node ASC",
         "output": "str",
-        "x": 1600,
-        "y": 680,
+        "x": 1340,
+        "y": 640,
         "wires": [
             [
                 "f81fb48e8c2d9f16"
@@ -1875,7 +1538,7 @@
         "id": "6ec23f3fc72424af",
         "type": "function",
         "z": "87ffda68aee91435",
-        "name": "function 1",
+        "name": "[] -> list",
         "func": "var str = \"\";\nmsg.payload.forEach(function(element) {\n    str += element.node + \" \"\n});\nmsg.payload = str;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
@@ -1883,8 +1546,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1820,
-        "y": 760,
+        "x": 1720,
+        "y": 640,
         "wires": [
             [
                 "30e3728576db2b96",
@@ -1910,7 +1573,7 @@
         "topic": "ALTER TABLE master ADD COLUMN ttl INTEGER; ALTER TABLE slave ADD COLUMN ttl INTEGER; ALTER TABLE display ADD COLUMN ttl INTEGER;",
         "payload": "",
         "payloadType": "date",
-        "x": 1370,
+        "x": 1330,
         "y": 480,
         "wires": [
             [
@@ -1930,6 +1593,406 @@
         "y": 480,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "inj0006nodeoptions",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "populate master/slave node dropdowns (on deploy + 60s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1040,
+        "y": 740,
+        "wires": [
+            [
+                "fn0008gidxqueryparams"
+            ]
+        ]
+    },
+    {
+        "id": "fn0008gidxqueryparams",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "build gidx filter params",
+        "func": "var gidx = global.get('selectedGidx');\nif (gidx === undefined || gidx === null) { gidx = 0; }\nmsg.params = { \"$gidx\": gidx };\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 720,
+        "wires": [
+            [
+                "sq0010distinctmasternodes",
+                "sq0011distinctslavenodes"
+            ]
+        ]
+    },
+    {
+        "id": "sq0010distinctmasternodes",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "SELECT DISTINCT node FROM master WHERE gidx = $gidx ORDER BY node ASC",
+        "name": "query master nodes for gidx",
+        "x": 1720,
+        "y": 700,
+        "wires": [
+            [
+                "fn0009masternodeoptions"
+            ]
+        ]
+    },
+    {
+        "id": "sq0011distinctslavenodes",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "SELECT DISTINCT node FROM slave WHERE gidx = $gidx ORDER BY node ASC",
+        "name": "query slave nodes for gidx",
+        "x": 1710,
+        "y": 740,
+        "wires": [
+            [
+                "fn0010slavenodeoptions"
+            ]
+        ]
+    },
+    {
+        "id": "fn0009masternodeoptions",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "build master node options",
+        "func": "var rows = msg.payload || [];\nmsg.options = rows.map(function (r) {\n    return { label: String(r.node), value: r.node, type: 'num' };\n});\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1990,
+        "y": 700,
+        "wires": [
+            [
+                "dd0004masternode"
+            ]
+        ]
+    },
+    {
+        "id": "fn0010slavenodeoptions",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "build slave node options",
+        "func": "var rows = msg.payload || [];\nmsg.options = rows.map(function (r) {\n    return { label: String(r.node), value: r.node, type: 'num' };\n});\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1990,
+        "y": 740,
+        "wires": [
+            [
+                "dd0005slavenode"
+            ]
+        ]
+    },
+    {
+        "id": "dd0004masternode",
+        "type": "ui-dropdown",
+        "z": "87ffda68aee91435",
+        "group": "77d6bff0feccaad0",
+        "name": "",
+        "label": "Master Node",
+        "tooltip": "",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "multiple": false,
+        "chips": false,
+        "clearable": false,
+        "options": [
+            {
+                "value": "",
+                "label": ""
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "typeIsComboBox": false,
+        "msgTrigger": "onChange",
+        "x": 2310,
+        "y": 700,
+        "wires": [
+            [
+                "ch0006setmasternode"
+            ]
+        ]
+    },
+    {
+        "id": "ch0006setmasternode",
+        "type": "change",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "selectedMasterNode",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2540,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dd0005slavenode",
+        "type": "ui-dropdown",
+        "z": "87ffda68aee91435",
+        "group": "77d6bff0feccaad0",
+        "name": "",
+        "label": "Slave Node",
+        "tooltip": "",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "multiple": false,
+        "chips": false,
+        "clearable": false,
+        "options": [
+            {
+                "value": "",
+                "label": ""
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "typeIsComboBox": false,
+        "msgTrigger": "onChange",
+        "x": 2310,
+        "y": 740,
+        "wires": [
+            [
+                "ch0007setslavenode"
+            ]
+        ]
+    },
+    {
+        "id": "ch0007setslavenode",
+        "type": "change",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "selectedSlaveNode",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2540,
+        "y": 740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "inj0008masterrefresh",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "master chart refresh (5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1.5",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 330,
+        "y": 1040,
+        "wires": [
+            [
+                "fn0011masterparams"
+            ]
+        ]
+    },
+    {
+        "id": "fn0011masterparams",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "build master query params",
+        "func": "var node = global.get('selectedMasterNode');\nif (node === undefined || node === null) { return null; }\nmsg.params = {\n    \"$node\": node,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 1040,
+        "wires": [
+            [
+                "sq0012querymasterhistory"
+            ]
+        ]
+    },
+    {
+        "id": "sq0012querymasterhistory",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "SELECT ts, setpoint, room FROM master WHERE node = $node AND ts >= $since ORDER BY ts ASC",
+        "name": "query master history",
+        "x": 880,
+        "y": 1040,
+        "wires": [
+            [
+                "fn0012masterrows"
+            ]
+        ]
+    },
+    {
+        "id": "fn0012masterrows",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "master rows -> chart series",
+        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nreturn [\n    { topic: 'setpoint', payload: series('setpoint'), action: 'replace' },\n    { topic: 'room', payload: series('room') }\n];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1140,
+        "y": 1040,
+        "wires": [
+            [
+                "cht0003msa"
+            ]
+        ]
+    },
+    {
+        "id": "inj0009slaverefresh",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "slave chart refresh (5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1.5",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 330,
+        "y": 1100,
+        "wires": [
+            [
+                "fn0013slaveparams"
+            ]
+        ]
+    },
+    {
+        "id": "fn0013slaveparams",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "build slave query params",
+        "func": "var node = global.get('selectedSlaveNode');\nif (node === undefined || node === null) { return null; }\nmsg.params = {\n    \"$node\": node,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 1100,
+        "wires": [
+            [
+                "sq0013queryslavehistory"
+            ]
+        ]
+    },
+    {
+        "id": "sq0013queryslavehistory",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "SELECT ts, motor1_pos, heater_out FROM slave WHERE node = $node AND ts >= $since ORDER BY ts ASC",
+        "name": "query slave history",
+        "x": 870,
+        "y": 1100,
+        "wires": [
+            [
+                "fn0014slaverows"
+            ]
+        ]
+    },
+    {
+        "id": "fn0014slaverows",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "slave rows -> chart series",
+        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nreturn [\n    { topic: 'motor', payload: series('motor1_pos'), action: 'replace' },\n    { topic: 'heater', payload: series('heater_out') }\n];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1130,
+        "y": 1100,
+        "wires": [
+            [
+                "cht0004msb"
+            ]
         ]
     }
 ]
