@@ -8,9 +8,34 @@
         "env": []
     },
     {
+        "id": "5e6a62ca796321f1",
+        "type": "junction",
+        "z": "87ffda68aee91435",
+        "x": 1000,
+        "y": 880,
+        "wires": [
+            [
+                "fn0011masterparams"
+            ]
+        ]
+    },
+    {
+        "id": "0f3ecfbe8f5a7a51",
+        "type": "junction",
+        "z": "87ffda68aee91435",
+        "x": 980,
+        "y": 1000,
+        "wires": [
+            [
+                "fn0013slaveparams",
+                "0e17992ec57c85ef"
+            ]
+        ]
+    },
+    {
         "id": "36b8a4cdf7d7347c",
         "type": "sqlitedb",
-        "db": "mesh_new_3.db",
+        "db": "mesh_new_4.db",
         "mode": "RWC"
     },
     {
@@ -166,7 +191,7 @@
         "type": "debug",
         "z": "87ffda68aee91435",
         "name": "debug 1",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -299,7 +324,7 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "Zone - Setpoint/Room °C (last 30 min)",
+        "label": "Zone - Setpoint/Room °C",
         "order": 3,
         "chartType": "line",
         "category": "topic",
@@ -349,7 +374,7 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 1210,
+        "x": 1170,
         "y": 800,
         "wires": [
             []
@@ -671,17 +696,17 @@
         "rules": [
             {
                 "t": "eq",
-                "v": "master",
+                "v": "cmd_sts",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "slave",
+                "v": "ctrl_sts",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "display",
+                "v": "disp_sts",
                 "vt": "str"
             }
         ],
@@ -785,9 +810,9 @@
         "z": "87ffda68aee91435",
         "mydb": "36b8a4cdf7d7347c",
         "sqlquery": "fixed",
-        "sql": "select * from 'display'\n",
-        "name": "",
-        "x": 1620,
+        "sql": "select * from 'slave'\n",
+        "name": "slave",
+        "x": 1590,
         "y": 380,
         "wires": [
             [
@@ -800,7 +825,7 @@
         "type": "debug",
         "z": "87ffda68aee91435",
         "name": "debug 6",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -808,7 +833,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1820,
-        "y": 380,
+        "y": 340,
         "wires": []
     },
     {
@@ -983,7 +1008,7 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "Zone - Motor/Heater % (last 30 min)",
+        "label": "Zone - Motor/Heater %",
         "order": 4,
         "chartType": "line",
         "category": "topic",
@@ -1033,7 +1058,7 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 1200,
+        "x": 1160,
         "y": 840,
         "wires": [
             []
@@ -1045,7 +1070,7 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "Master Node - Setpoint/Room °C (last 30 min)",
+        "label": "Master Node - Setpoint/Room °C",
         "order": 6,
         "chartType": "line",
         "category": "topic",
@@ -1095,7 +1120,7 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 2040,
+        "x": 2000,
         "y": 900,
         "wires": [
             []
@@ -1107,7 +1132,7 @@
         "z": "87ffda68aee91435",
         "group": "77d6bff0feccaad0",
         "name": "",
-        "label": "Slave Node - Motor/Heater % (last 30 min)",
+        "label": "Slave Node - Motor/Heater %",
         "order": 8,
         "chartType": "line",
         "category": "topic",
@@ -1157,7 +1182,7 @@
         "height": 8,
         "className": "",
         "interpolation": "linear",
-        "x": 2030,
+        "x": 1980,
         "y": 960,
         "wires": [
             []
@@ -1282,7 +1307,9 @@
         "y": 680,
         "wires": [
             [
-                "fn0015cleargidxchange"
+                "fn0015cleargidxchange",
+                "2ab157a4b312b62c",
+                "fn0002historyparams"
             ]
         ]
     },
@@ -1307,7 +1334,7 @@
         "type": "debug",
         "z": "87ffda68aee91435",
         "name": "debug 12",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1363,7 +1390,7 @@
         "type": "debug",
         "z": "87ffda68aee91435",
         "name": "debug 13",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1605,7 +1632,9 @@
         "x": 2930,
         "y": 680,
         "wires": [
-            []
+            [
+                "5e6a62ca796321f1"
+            ]
         ]
     },
     {
@@ -1665,7 +1694,9 @@
         "x": 2930,
         "y": 720,
         "wires": [
-            []
+            [
+                "0f3ecfbe8f5a7a51"
+            ]
         ]
     },
     {
@@ -1698,7 +1729,7 @@
         "type": "function",
         "z": "87ffda68aee91435",
         "name": "build master query params",
-        "func": "var node = global.get('selectedMasterNode');\nif (node === undefined || node === null) { return null; }\nmsg.params = {\n    \"$node\": node,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
+        "func": "var nodeAddr = global.get('selectedMasterNode');\nif (nodeAddr === undefined || nodeAddr === null) { return null; }\nmsg.params = {\n    \"$node\": nodeAddr,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1725,7 +1756,8 @@
         "y": 900,
         "wires": [
             [
-                "fn0012masterrows"
+                "fn0012masterrows",
+                "1ff03538bde77810"
             ]
         ]
     },
@@ -1734,7 +1766,7 @@
         "type": "function",
         "z": "87ffda68aee91435",
         "name": "master rows -> chart series",
-        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nreturn [\n    { topic: 'setpoint', payload: series('setpoint'), action: 'replace' },\n    { topic: 'room', payload: series('room') }\n];",
+        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nreturn [[\n    { topic: 'setpoint', payload: series('setpoint'), action: 'replace' },\n    { topic: 'room', payload: series('room') }\n]];",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1745,7 +1777,8 @@
         "y": 900,
         "wires": [
             [
-                "cht0003msa"
+                "cht0003msa",
+                "f0da3dfdecf9bc4c"
             ]
         ]
     },
@@ -1779,7 +1812,7 @@
         "type": "function",
         "z": "87ffda68aee91435",
         "name": "build slave query params",
-        "func": "var node = global.get('selectedSlaveNode');\nif (node === undefined || node === null) { return null; }\nmsg.params = {\n    \"$node\": node,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
+        "func": "var nodeAddr = global.get('selectedSlaveNode');\nif (node === undefined || nodeAddr === null) { return null; }\nmsg.params = {\n    \"$node\": nodeAddr,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1787,7 +1820,7 @@
         "finalize": "",
         "libs": [],
         "x": 1140,
-        "y": 960,
+        "y": 980,
         "wires": [
             [
                 "sq0013queryslavehistory"
@@ -1803,10 +1836,11 @@
         "sql": "SELECT ts, motor1_pos, heater_out FROM slave WHERE node = $node AND ts >= $since ORDER BY ts ASC",
         "name": "query slave history",
         "x": 1390,
-        "y": 960,
+        "y": 980,
         "wires": [
             [
-                "fn0014slaverows"
+                "fn0014slaverows",
+                "7dfc7450e8f29c10"
             ]
         ]
     },
@@ -1815,7 +1849,7 @@
         "type": "function",
         "z": "87ffda68aee91435",
         "name": "slave rows -> chart series",
-        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nreturn [\n    { topic: 'motor', payload: series('motor1_pos'), action: 'replace' },\n    { topic: 'heater', payload: series('heater_out') }\n];",
+        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nreturn [[\n    { topic: 'motor', payload: series('motor1_pos'), action: 'replace' },\n    { topic: 'heater', payload: series('heater_out') }\n]];",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1823,10 +1857,11 @@
         "finalize": "",
         "libs": [],
         "x": 1650,
-        "y": 960,
+        "y": 980,
         "wires": [
             [
-                "cht0004msb"
+                "cht0004msb",
+                "f0da3dfdecf9bc4c"
             ]
         ]
     },
@@ -1835,8 +1870,8 @@
         "type": "function",
         "z": "87ffda68aee91435",
         "name": "reset node selection + clear charts on gidx change",
-        "func": "global.set('selectedMasterNode', null);\nglobal.set('selectedSlaveNode', null);\n\nvar clearA = [\n    { topic: 'setpoint', payload: [], action: 'replace' },\n    { topic: 'room', payload: [] }\n];\nvar clearB = [\n    { topic: 'motor', payload: [], action: 'replace' },\n    { topic: 'heater', payload: [] }\n];\n\nreturn [msg, clearA, clearB];",
-        "outputs": 3,
+        "func": "global.set('selectedMasterNode', null);\nglobal.set('selectedSlaveNode', null);\n\nvar clearA = [\n    { topic: 'setpoint', payload: [], action: 'replace' },\n    { topic: 'room', payload: [] }\n];\nvar clearB = [\n    { topic: 'motor', payload: [], action: 'replace' },\n    { topic: 'heater', payload: [] }\n];\nvar clearC = [\n    { topic: 'ttl', payload: [], action: 'replace' }\n\n];\n\nreturn [msg, clearA, clearB, clearC];",
+        "outputs": 4,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
@@ -1853,7 +1888,300 @@
             ],
             [
                 "cht0004msb"
+            ],
+            [
+                "56e0b07a91d9c8ec"
             ]
         ]
+    },
+    {
+        "id": "f0da3dfdecf9bc4c",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 9",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1900,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "ae86f8f6fa907e75",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "fixed",
+        "sql": "select * from 'master'\n",
+        "name": "master",
+        "x": 1590,
+        "y": 340,
+        "wires": [
+            [
+                "0afc48b03590e6b7"
+            ]
+        ]
+    },
+    {
+        "id": "5eb493c4a8611ecc",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "fixed",
+        "sql": "select * from 'display'\n",
+        "name": "display",
+        "x": 1600,
+        "y": 300,
+        "wires": [
+            [
+                "0afc48b03590e6b7"
+            ]
+        ]
+    },
+    {
+        "id": "a2e37e70c0e42d3a",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1420,
+        "y": 340,
+        "wires": [
+            [
+                "ae86f8f6fa907e75"
+            ]
+        ]
+    },
+    {
+        "id": "5bce6351d2aa7942",
+        "type": "inject",
+        "z": "87ffda68aee91435",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1420,
+        "y": 300,
+        "wires": [
+            [
+                "5eb493c4a8611ecc"
+            ]
+        ]
+    },
+    {
+        "id": "7dfc7450e8f29c10",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 10",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1640,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "1ff03538bde77810",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 14",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1500,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "56e0b07a91d9c8ec",
+        "type": "ui-chart",
+        "z": "87ffda68aee91435",
+        "group": "77d6bff0feccaad0",
+        "name": "",
+        "label": "Slave Node - TTL",
+        "order": 9,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "x",
+        "xAxisPropertyType": "property",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "auto",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "y",
+        "yAxisPropertyType": "property",
+        "ymin": "",
+        "ymax": "",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 30,
+        "removeOlderUnit": "60",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "interpolation": "linear",
+        "x": 1930,
+        "y": 1080,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cb24c1dc5e7345f7",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "slave rows -> chart series",
+        "func": "var rows = msg.payload || [];\n\nfunction series(key) {\n    return rows.map(function (r) {\n        return { x: r.ts, y: r[key] };\n    });\n}\n\nreturn [[\n    { topic: 'ttl', payload: series('ttl'), action: 'replace' }\n]];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1670,
+        "y": 1080,
+        "wires": [
+            [
+                "56e0b07a91d9c8ec",
+                "e175aed0b6c5caed"
+            ]
+        ]
+    },
+    {
+        "id": "2f9eaec842c87dfa",
+        "type": "sqlite",
+        "z": "87ffda68aee91435",
+        "mydb": "36b8a4cdf7d7347c",
+        "sqlquery": "prepared",
+        "sql": "SELECT ts, ttl FROM slave WHERE node = $node AND ts >= $since ORDER BY ts ASC",
+        "name": "query slave history",
+        "x": 1390,
+        "y": 1040,
+        "wires": [
+            [
+                "cb24c1dc5e7345f7",
+                "3bfb189148fa82bd"
+            ]
+        ]
+    },
+    {
+        "id": "0e17992ec57c85ef",
+        "type": "function",
+        "z": "87ffda68aee91435",
+        "name": "build slave query params",
+        "func": "var nodeAddr = global.get('selectedSlaveNode');\nif (node === undefined || nodeAddr === null) { return null; }\nmsg.params = {\n    \"$node\": nodeAddr,\n    \"$since\": Date.now() - (30 * 60 * 1000)\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 1040,
+        "wires": [
+            [
+                "2f9eaec842c87dfa"
+            ]
+        ]
+    },
+    {
+        "id": "3bfb189148fa82bd",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 15",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1580,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "e175aed0b6c5caed",
+        "type": "debug",
+        "z": "87ffda68aee91435",
+        "name": "debug 16",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1900,
+        "y": 1120,
+        "wires": []
     }
 ]
